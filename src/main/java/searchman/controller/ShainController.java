@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import searchman.entity.Shain;
+import searchman.service.CustomUserDetailsService;
 import searchman.service.ShainService;
 
 @Controller
@@ -18,6 +19,25 @@ public class ShainController {
 
 	@Autowired
 	private ShainService shainService;
+	@Autowired
+	private CustomUserDetailsService customUserDetailsService;
+
+	@GetMapping("/login")
+	public String login() {
+		return "login"; // "login.jsp"
+	}
+
+	@GetMapping("/")
+	public String top(Model model) {
+
+		// リスト取得
+		List<Shain> shainList = shainService.findAll();
+
+		// JSPに渡す
+		model.addAttribute("shainList", shainList);
+		// JSPに転送
+		return "redirect:/index";
+	}
 
 	@GetMapping("/index")
 	public String index(Model model) {

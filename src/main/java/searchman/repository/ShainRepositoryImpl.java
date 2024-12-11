@@ -43,6 +43,22 @@ public class ShainRepositoryImpl implements ShainRepository {
 		return shainList.isEmpty() ? null : shainList.get(0);
 	}
 
+
+	public Shain findByShainEmail(int shainEmail) {
+		//SQL文の作成
+		final String sql = "select id, email,password from shain where id = :email";
+
+		// パラメータの作成
+		MapSqlParameterSource param = new MapSqlParameterSource();
+		param.addValue("email", shainEmail);
+
+		// SQLの実行
+		List<Shain> shainList = jdbcTemplate.query(sql, param, new BeanPropertyRowMapper<Shain>(Shain.class));
+
+		//リストを判定して戻す
+		return shainList.isEmpty() ? null : shainList.get(0);
+	}
+	
 	@Override
 	public void insertShain(Shain shain) {
 		//SQL文の作成

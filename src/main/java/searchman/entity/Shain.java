@@ -2,12 +2,17 @@ package searchman.entity;
 
 public class Shain {
 	//社員属性(プロパティ)
+
 	private int id;
 	private String name;
 	private String sei;
 	private int nen;
 	private String address;
 	private String email;
+	private String password;
+
+	public record ShainAccount(String email, String password) {
+	}
 
 	public int getId() {
 		return id;
