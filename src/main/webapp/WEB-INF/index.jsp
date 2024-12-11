@@ -18,9 +18,6 @@ th, td {
 }
 </style>
 </head>
-<form action="/logout" method="post">
-	<button type="submit">ログアウト</button>
-</form>
 <body>
 	<h1>社員一覧</h1>
 
@@ -58,10 +55,17 @@ th, td {
 %>
 
 	</table>
-	<p></p>
-	<!-- 「社員を登録する」ボタン -->
+	<p>
+		<!-- 「社員情報を登録する」ボタン -->
 	<form action="insert" method="get">
-		<input type="submit" value="社員を登録する">
+		<input type="submit" value="社員情報を登録する">
 	</form>
+	</p>
+	<p>
+		<!-- 「トップ画面へ」ボタン -->
+	<form action="top" method="get">
+		<input type="submit" value="トップ画面へ">
+	</form>
+	</p>
 </body>
 </html>

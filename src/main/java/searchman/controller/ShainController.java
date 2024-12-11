@@ -3,6 +3,8 @@ package searchman.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,17 +51,48 @@ public class ShainController {
 
 	}
 
-	@GetMapping("/")
+	@GetMapping("/top")
 	public String top(Model model) {
-
-		// リスト取得
-		List<Shain> shainList = shainService.findAll();
-
-		// JSPに渡す
-		model.addAttribute("shainList", shainList);
-		// JSPに転送
-		return "redirect:/index";
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		String role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+				.map(grantedAuthority -> grantedAuthority.getAuthority())
+				.findFirst().orElse(null);
+		model.addAttribute("username", username);
+		model.addAttribute("role", role);
+		return "top";
 	}
+
+	@GetMapping("/profile")
+	public String profile() {
+		return "profile";
+	}
+
+	//	@GetMapping("/")
+	//	public String main(Model model) {
+	//
+	//		return "redirect:/top";
+	//	}
+
+	@GetMapping("/")
+	public String main(Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		model.addAttribute("username", username);
+		return "redirect:/top";
+	}
+
+	//	@GetMapping("/")
+	//	public String main(Model model) {
+	//
+	//		// リスト取得
+	//		List<Shain> shainList = shainService.findAll();
+	//
+	//		// JSPに渡す
+	//		model.addAttribute("shainList", shainList);
+	//		// JSPに転送
+	//		return "redirect:/index";
+	//	}
 
 	@GetMapping("/index")
 	public String index(Model model) {
