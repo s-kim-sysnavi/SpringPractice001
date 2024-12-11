@@ -64,6 +64,8 @@
 				<td><input type="text" id="address" name="address"
 					class="form-input" required></td>
 			</tr>
+			<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}">
 		</table>
 		<button type="submit" class="form-button">登録</button>
 	</form>

@@ -72,6 +72,9 @@ public class ShainRepositoryImpl implements ShainRepository {
 		param.addValue("sei", shain.getSei());
 		param.addValue("nen", shain.getNen());
 		param.addValue("address", shain.getAddress());
+		
+		System.out.println(sql);
+		System.out.println(222);
 
 		// SQLの実行
 		jdbcTemplate.update(sql, param);

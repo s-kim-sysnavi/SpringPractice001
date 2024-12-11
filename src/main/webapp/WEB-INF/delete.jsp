@@ -54,7 +54,8 @@
 			</tr>
 		</table>
 		<button type="submit" class="form-button">削除</button>
-		<input type="hidden" name="id" value="<%=shain.getId()%>"> 
+		<input type="hidden" name="id" value="<%=shain.getId()%>"> <input
+			type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 	</form>
 </body>
 </html>

@@ -54,6 +54,8 @@
 		<input type="hidden" name="sei" value="<%=shain.getSei()%>"> <input
 			type="hidden" name="nen" value="<%=shain.getNen()%>"><input
 			type="hidden" name="address" value="<%=shain.getAddress()%>">
+		<input type="hidden" name="${_csrf.parameterName}"
+			value="${_csrf.token}">
 	</form>
 </body>
 </html>

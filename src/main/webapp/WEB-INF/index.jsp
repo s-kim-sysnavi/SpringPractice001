@@ -18,6 +18,9 @@ th, td {
 }
 </style>
 </head>
+<form action="/logout" method="post">
+	<button type="submit">ログアウト</button>
+</form>
 <body>
 	<h1>社員一覧</h1>
 

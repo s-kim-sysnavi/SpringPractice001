@@ -3,6 +3,7 @@ package searchman.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import searchman.entity.Shain;
+import searchman.repository.UserRepository;
 import searchman.service.CustomUserDetailsService;
 import searchman.service.ShainService;
 
@@ -21,10 +23,30 @@ public class ShainController {
 	private ShainService shainService;
 	@Autowired
 	private CustomUserDetailsService customUserDetailsService;
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@GetMapping("/login")
 	public String login() {
-		return "login"; // "login.jsp"
+		return "login"; // login.jsp
+	}
+
+	@GetMapping("/register")
+	public String Register() {
+		return "register"; // register.jsp
+	}
+
+	@PostMapping("/register")
+	public String registerUser(@RequestParam String username, @RequestParam String password, Model model) {
+		try {
+			customUserDetailsService.registerUser(username, password); // 会員登録のロジック
+			return "redirect:/login"; // ログイン画面にリダイレクト
+		} catch (IllegalArgumentException e) {
+			return "redirect:/register?error"; // エラー
+		}
+
 	}
 
 	@GetMapping("/")

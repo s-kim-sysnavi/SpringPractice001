@@ -63,9 +63,11 @@
 				<td><label for="address">住所:</label></td>
 				<td><input type="text" id="address" name="address"
 					class="form-input" required></td>
+				<input type="hidden" name="_csrf" value="${_csrf.token}" />
 			</tr>
 		</table>
 		<button type="submit" class="form-button">登録</button>
+
 	</form>
 </body>
 
