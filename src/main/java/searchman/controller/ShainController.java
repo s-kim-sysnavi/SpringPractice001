@@ -53,6 +53,7 @@ public class ShainController {
 
 	@GetMapping("/top")
 	public String top(Model model) {
+
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		String role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
@@ -76,10 +77,15 @@ public class ShainController {
 
 	@GetMapping("/")
 	public String main(Model model) {
+
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
+		String role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+				.map(grantedAuthority -> grantedAuthority.getAuthority())
+				.findFirst().orElse(null);
 		model.addAttribute("username", username);
-		return "redirect:/top";
+		model.addAttribute("role", role);
+		return "top";
 	}
 
 	//	@GetMapping("/")
