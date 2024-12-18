@@ -9,7 +9,7 @@ public interface ShainRepository {
 	List<Shain> findAll();
 
 	//社員IDによる社員取得
-	Shain findByShainId(int shainId);
+	Shain findByShainId(Long shainId);
 
 	//社員挿入
 	void insertShain(Shain shain);
@@ -18,8 +18,8 @@ public interface ShainRepository {
 	void updateShain(Shain shain);
 
 	//社員削除
-	void deleteShain(int shainId);
+	void deleteShain(Long shainId);
 
-	void copyShain(Shain shain);
+//	void copyShain(Shain shain);
 
 }

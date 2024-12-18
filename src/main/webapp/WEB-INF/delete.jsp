@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>社員削除画面</title>
+<title>社員情報削除画面</title>
 <style>
 .form-input {
 	width: 100%;
@@ -29,12 +29,12 @@
 	<%
 	Shain shain = (Shain) request.getAttribute("shain");
 	%>
-	<h1>社員削除画面</h1>
+	<h1>社員情報削除画面</h1>
 	<form action="delete" method="post">
 		<table class="form-table">
 			<tr>
-				<td><label for="id">ID:</label></td>
-				<td><%=shain.getId()%></td>
+				<td><label for="userId">ID:</label></td>
+				<td><%=shain.getUserId()%></td>
 			</tr>
 			<tr>
 				<td><label for="name">名前:</label></td>
@@ -44,18 +44,23 @@
 				<td><label for="sei">姓:</label></td>
 				<td><%=shain.getSei()%></td>
 			</tr>
-			<tr>
-				<td><label for="nen">年:</label></td>
-				<td><%=shain.getNen()%></td>
-			</tr>
+
 			<tr>
 				<td><label for="address">住所:</label></td>
 				<td><%=shain.getAddress()%></td>
 			</tr>
+			<tr>
+				<td><label for="nen">入社年度:</label></td>
+				<td><%=shain.getNen()%></td>
+			</tr>
 		</table>
 		<button type="submit" class="form-button">削除</button>
-		<input type="hidden" name="id" value="<%=shain.getId()%>"> <input
-			type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+		<input type="hidden" name="userId" value="<%=shain.getUserId()%>">
+		<input type="hidden" name="${_csrf.parameterName}"
+			value="${_csrf.token}">
+	</form>
+	<form action="top" method="get">
+		<input type="submit" value="一覧画面へ">
 	</form>
 </body>
 </html>

@@ -9,7 +9,8 @@ public class Shain {
 	private int nen;
 	private String address;
 	private String email;
-	private String password;
+	private Long userId;
+	private String profileImage;
 
 	public record ShainAccount(String email, String password) {
 	}
@@ -54,12 +55,27 @@ public class Shain {
 		this.address = address;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getProfileImage() {
+		return profileImage;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setProfileImage(String profileImage) {
+		this.profileImage = profileImage;
 	}
 
+	//	public String getEmail() {
+	//		return email;
+	//	}
+	//
+	//	public void setEmail(String email) {
+	//		this.email = email;
+	//	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 }

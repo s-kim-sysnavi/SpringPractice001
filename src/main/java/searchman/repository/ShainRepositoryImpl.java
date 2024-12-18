@@ -19,22 +19,23 @@ public class ShainRepositoryImpl implements ShainRepository {
 	@Override
 	public List<Shain> findAll() {
 		//SQL文の作成
-		final String sql = "select id, name, sei, nen, address from shain";
+		final String sql = "select id, name, sei, nen, address,user_id from shain order by user_id";
 
 		//SQLの実行
 		List<Shain> shainList = jdbcTemplate.query(sql, new BeanPropertyRowMapper<Shain>(Shain.class));
+		//		System.out.println(shainList.get(6).getUserId());
 
 		return shainList;
 	}
 
 	@Override
-	public Shain findByShainId(int shainId) {
+	public Shain findByShainId(Long shainId) {
 		//SQL文の作成
-		final String sql = "select id, name, sei, nen, address from shain where id = :id";
+		final String sql = "select id, name, sei, nen, address ,user_id  from shain where user_id = :user_id";
 
 		// パラメータの作成
 		MapSqlParameterSource param = new MapSqlParameterSource();
-		param.addValue("id", shainId);
+		param.addValue("user_id", shainId);
 
 		// SQLの実行
 		List<Shain> shainList = jdbcTemplate.query(sql, param, new BeanPropertyRowMapper<Shain>(Shain.class));
@@ -43,27 +44,26 @@ public class ShainRepositoryImpl implements ShainRepository {
 		return shainList.isEmpty() ? null : shainList.get(0);
 	}
 
-
-	public Shain findByShainEmail(int shainEmail) {
-		//SQL文の作成
-		final String sql = "select id, email,password from shain where id = :email";
-
-		// パラメータの作成
-		MapSqlParameterSource param = new MapSqlParameterSource();
-		param.addValue("email", shainEmail);
-
-		// SQLの実行
-		List<Shain> shainList = jdbcTemplate.query(sql, param, new BeanPropertyRowMapper<Shain>(Shain.class));
-
-		//リストを判定して戻す
-		return shainList.isEmpty() ? null : shainList.get(0);
-	}
-	
+	//	public Shain findByShainEmail(int shainEmail) {
+	//		//SQL文の作成
+	//		final String sql = "select id, email,user_id from shain where email = :email";
+	//
+	//		// パラメータの作成
+	//		MapSqlParameterSource param = new MapSqlParameterSource();
+	//		param.addValue("email", shainEmail);
+	//
+	//		// SQLの実行
+	//		List<Shain> shainList = jdbcTemplate.query(sql, param, new BeanPropertyRowMapper<Shain>(Shain.class));
+	//
+	//		//リストを判定して戻す
+	//		return shainList.isEmpty() ? null : shainList.get(0);
+	//	}
+	//	
 	@Override
 	public void insertShain(Shain shain) {
 		//SQL文の作成
-		final String sql = "insert into shain(name, sei, nen, address) "
-				+ "values(:name,:sei,:nen,:address)";
+		final String sql = "insert into shain(name, sei, nen, address ,user_id) "
+				+ "values(:name,:sei,:nen,:address ,:user_id)";
 
 		// パラメータの作成
 		MapSqlParameterSource param = new MapSqlParameterSource();
@@ -72,7 +72,32 @@ public class ShainRepositoryImpl implements ShainRepository {
 		param.addValue("sei", shain.getSei());
 		param.addValue("nen", shain.getNen());
 		param.addValue("address", shain.getAddress());
-		
+
+		param.addValue("user_id", shain.getUserId());
+
+		System.out.println(sql);
+		System.out.println(222);
+
+		// SQLの実行
+		jdbcTemplate.update(sql, param);
+
+	}
+
+	public void insertUserId(Shain shain) {
+		//SQL文の作成
+		final String sql = "update shain set user_id=:user_id "
+				+ "where name=:name and sei=:sei and nen=:nen and address=:address";
+
+		// パラメータの作成
+		MapSqlParameterSource param = new MapSqlParameterSource();
+
+		param.addValue("name", shain.getName());
+		param.addValue("sei", shain.getSei());
+		param.addValue("nen", shain.getNen());
+		param.addValue("address", shain.getAddress());
+
+		param.addValue("user_id", shain.getUserId());
+
 		System.out.println(sql);
 		System.out.println(222);
 
@@ -85,7 +110,7 @@ public class ShainRepositoryImpl implements ShainRepository {
 	public void updateShain(Shain shain) {
 		//SQL文の作成
 		final String sql = "update shain set name=:name, sei=:sei, nen=:nen, address=:address "
-				+ "where id=:id";
+				+ "where user_id=:user_id";
 
 		// パラメータの作成
 		MapSqlParameterSource param = new MapSqlParameterSource();
@@ -94,6 +119,7 @@ public class ShainRepositoryImpl implements ShainRepository {
 		param.addValue("sei", shain.getSei());
 		param.addValue("nen", shain.getNen());
 		param.addValue("address", shain.getAddress());
+		param.addValue("user_id", shain.getUserId());
 
 		// SQLの実行
 		jdbcTemplate.update(sql, param);
@@ -101,36 +127,36 @@ public class ShainRepositoryImpl implements ShainRepository {
 	}
 
 	@Override
-	public void deleteShain(int shainId) {
+	public void deleteShain(Long shainId) {
 		//SQL文の作成
-		final String sql = "delete  from shain where id=:id";
+		final String sql = "delete  from shain where user_id=:user_id";
 
 		// パラメータの作成
 		MapSqlParameterSource param = new MapSqlParameterSource();
-		param.addValue("id", shainId);
+		param.addValue("user_id", shainId);
 
 		// SQLの実行
 		jdbcTemplate.update(sql, param);
 
 	}
 
-	@Override
-	public void copyShain(Shain shain) {
-		//SQL文の作成
-		final String sql = "insert into shain(name, sei, nen, address) "
-				+ "values(:name,:sei,:nen,:address)";
-
-		// パラメータの作成
-		MapSqlParameterSource param = new MapSqlParameterSource();
-
-		param.addValue("name", shain.getName());
-		param.addValue("sei", shain.getSei());
-		param.addValue("nen", shain.getNen());
-		param.addValue("address", shain.getAddress());
-
-		// SQLの実行
-		jdbcTemplate.update(sql, param);
-
-	}
+	//	@Override
+	//	public void copyShain(Shain shain) {
+	//		//SQL文の作成
+	//		final String sql = "insert into shain(name, sei, nen, address) "
+	//				+ "values(:name,:sei,:nen,:address)";
+	//
+	//		// パラメータの作成
+	//		MapSqlParameterSource param = new MapSqlParameterSource();
+	//
+	//		param.addValue("name", shain.getName());
+	//		param.addValue("sei", shain.getSei());
+	//		param.addValue("nen", shain.getNen());
+	//		param.addValue("address", shain.getAddress());
+	//
+	//		// SQLの実行
+	//		jdbcTemplate.update(sql, param);
+	//
+	//	}
 
 }

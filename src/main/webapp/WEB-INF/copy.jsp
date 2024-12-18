@@ -41,12 +41,16 @@
 				<td><%=shain.getSei()%></td>
 			</tr>
 			<tr>
-				<td><label for="nen">年:</label></td>
-				<td><%=shain.getNen()%></td>
+				<td><label for="email">Email:</label></td>
+				<td><%=shain.getEmail()%></td>
 			</tr>
 			<tr>
 				<td><label for="address">住所:</label></td>
 				<td><%=shain.getAddress()%></td>
+			</tr>
+			<tr>
+				<td><label for="nen">入社年度:</label></td>
+				<td><%=shain.getNen()%></td>
 			</tr>
 		</table>
 		<button type="submit" class="form-button">複製</button>
@@ -56,6 +60,9 @@
 			type="hidden" name="address" value="<%=shain.getAddress()%>">
 		<input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}">
+	</form>
+	<form action="index" method="get">
+		<input type="submit" value="一覧画面へ">
 	</form>
 </body>
 </html>

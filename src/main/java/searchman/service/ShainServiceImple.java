@@ -29,10 +29,29 @@ public class ShainServiceImple implements ShainService {
 		shain.setSei(request.getSei());
 		shain.setNen(request.getNen());
 		shain.setAddress(request.getAddress());
+		shain.setUserId(request.getUserId());
 		//社員オブジェクトを戻す
 		return shain;
 
 	}
+
+	//	@Override
+	//	public Shain makeShain2(Shain request, int userId, String email) {
+	//		//社員オブジェクトの作成
+	//		Shain shain = new Shain();
+	//		//社員オブジェクトに値を代入
+	//		shain.setId(request.getId());
+	//		shain.setName(request.getName());
+	//		shain.setSei(request.getSei());
+	//		shain.setNen(request.getNen());
+	//		shain.setAddress(request.getAddress());
+	//		shain.setEmail(email);
+	//		shain.setUserId(userId);
+	//
+	//		//社員オブジェクトを戻す
+	//		return shain;
+	//
+	//	}
 
 	@Override
 	public void insertShain(Shain shain) {
@@ -41,7 +60,7 @@ public class ShainServiceImple implements ShainService {
 	}
 
 	@Override
-	public Shain findByShainId(int shainId) {
+	public Shain findByShainId(Long shainId) {
 		return shainRepository.findByShainId(shainId);
 	}
 
@@ -52,13 +71,13 @@ public class ShainServiceImple implements ShainService {
 	}
 
 	@Override
-	public void deleteShain(int shainId) {
+	public void deleteShain(Long shainId) {
 		shainRepository.deleteShain(shainId);
 
 	}
 
-	@Override
-	public void copyShain(Shain shain) {
-		shainRepository.copyShain(shain);
-	}
+	//	@Override
+	//	public void copyShain(Shain shain) {
+	//		shainRepository.copyShain(shain);
+	//	}
 }

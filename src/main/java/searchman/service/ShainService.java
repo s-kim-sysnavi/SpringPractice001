@@ -15,14 +15,16 @@ public interface ShainService {
 	void insertShain(Shain shain);
 
 	//社員IDによる社員取得
-	Shain findByShainId(int shainId);
+	Shain findByShainId(Long shainId);
 
 	//社員更新
 	void updateShain(Shain shain);
 
 	//社員削除
-	void deleteShain(int shainId);
-	
-	//社員更新
-	void copyShain(Shain shain);
+	void deleteShain(Long shainId);
+
+	//	Shain makeShain2(Shain request, int userId, String email);
+
+	//	//社員更新
+	//	void copyShain(Shain shain);
 }
