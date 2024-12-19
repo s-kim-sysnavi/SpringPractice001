@@ -30,7 +30,6 @@ public class ShainServiceImple implements ShainService {
 		shain.setNen(request.getNen());
 		shain.setAddress(request.getAddress());
 		shain.setUserId(request.getUserId());
-		shain.setProfileImage(request.getProfileImage());
 		//社員オブジェクトを戻す
 		return shain;
 

@@ -39,11 +39,10 @@
 		<table class="form-table">
 			<tr>
 				<td><label for="file">プロフィール写真:</label></td>
-				<td><img src="/profile/<%=shain.getProfileImage()%>"></td>
-
-				<td><input type="file" name="profileImage" /></td>
+				
+				<%--<td><input type="file" name="profileImage" /></td>--%>
 			</tr>
-
+			<%-- <button type="submit">アップロード</button> --%>
 
 			<tr>
 				<td><label for="username">メール:</label></td>

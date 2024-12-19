@@ -88,7 +88,7 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!--		<dependency>-->
+<!--		<dependency>-->
 		<!--			<groupId>commons-fileupload</groupId>-->
 		<!--			<artifactId>commons-fileupload</artifactId>-->
 		<!--			<version>1.4</version>-->
@@ -110,11 +110,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-<!--		<dependency>-->
-		<!--			<groupId>searchman</groupId>-->
-		<!--			<artifactId>Spring06WEBAPP</artifactId>-->
-		<!--			<version>0.0.1-SNAPSHOT</version>-->
-		<!--		</dependency>-->
+		<dependency>
+			<groupId>searchman</groupId>
+			<artifactId>Spring06WEBAPP</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>

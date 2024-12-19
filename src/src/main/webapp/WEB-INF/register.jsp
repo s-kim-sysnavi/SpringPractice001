@@ -35,10 +35,8 @@
 				<%
 }
 %>
-
 		</select></td> <input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}">
-			<input type="hidden" name="profileImage" value="default.png">
 		<button type="submit">登録する</button>
 </body>
 </html>

@@ -21,7 +21,5 @@ public interface ShainRepository {
 	void deleteShain(Long shainId);
 
 	//	void pathsave(Shain shain);
-	//
-	//	void findProfileImage(Long shainId);
 
 }

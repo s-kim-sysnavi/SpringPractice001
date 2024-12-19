@@ -52,13 +52,13 @@ public class Shain {
 		this.address = address;
 	}
 
-	public String getProfileImage() {
-		return profileImage;
-	}
-
-	public void setProfileImage(String profileImage) {
-		this.profileImage = profileImage;
-	}
+	//	public String getProfileImage() {
+	//		return profileImage;
+	//	}
+	//
+	//	public void setProfileImage(String profileImage) {
+	//		this.profileImage = profileImage;
+	//	}
 
 	public Long getUserId() {
 		return userId;

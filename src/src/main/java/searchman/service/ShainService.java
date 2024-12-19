@@ -22,7 +22,6 @@ public interface ShainService {
 
 	//社員削除
 	void deleteShain(Long shainId);
-	//
-	//	String saveFile(MultipartFile file);
 
+	//	String saveFile(MultipartFile file);
 }

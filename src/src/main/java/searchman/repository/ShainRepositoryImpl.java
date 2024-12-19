@@ -31,7 +31,7 @@ public class ShainRepositoryImpl implements ShainRepository {
 	@Override
 	public Shain findByShainId(Long shainId) {
 		//SQL文の作成
-		final String sql = "select id, name, sei, nen, address ,user_id,profile_image  from shain where user_id = :user_id";
+		final String sql = "select id, name, sei, nen, address ,user_id  from shain where user_id = :user_id";
 
 		// パラメータの作成
 		MapSqlParameterSource param = new MapSqlParameterSource();
@@ -47,8 +47,8 @@ public class ShainRepositoryImpl implements ShainRepository {
 	@Override
 	public void insertShain(Shain shain) {
 		//SQL文の作成
-		final String sql = "insert into shain(name, sei, nen, address ,user_id,profile_image) "
-				+ "values(:name,:sei,:nen,:address ,:user_id,:profile_image)";
+		final String sql = "insert into shain(name, sei, nen, address ,user_id) "
+				+ "values(:name,:sei,:nen,:address ,:user_id)";
 
 		// パラメータの作成
 		MapSqlParameterSource param = new MapSqlParameterSource();
@@ -59,7 +59,6 @@ public class ShainRepositoryImpl implements ShainRepository {
 		param.addValue("address", shain.getAddress());
 
 		param.addValue("user_id", shain.getUserId());
-		param.addValue("profile_image", shain.getProfileImage());
 
 		System.out.println(sql);
 		System.out.println(222);
@@ -95,7 +94,7 @@ public class ShainRepositoryImpl implements ShainRepository {
 	@Override
 	public void updateShain(Shain shain) {
 		//SQL文の作成
-		final String sql = "update shain set name=:name, sei=:sei, nen=:nen, address=:address,profile_image =:profile_image "
+		final String sql = "update shain set name=:name, sei=:sei, nen=:nen, address=:address "
 				+ "where user_id=:user_id";
 
 		// パラメータの作成
@@ -106,7 +105,6 @@ public class ShainRepositoryImpl implements ShainRepository {
 		param.addValue("nen", shain.getNen());
 		param.addValue("address", shain.getAddress());
 		param.addValue("user_id", shain.getUserId());
-		param.addValue("user_id", shain.getProfileImage());
 
 		// SQLの実行
 		jdbcTemplate.update(sql, param);
@@ -142,19 +140,6 @@ public class ShainRepositoryImpl implements ShainRepository {
 		jdbcTemplate.update(sql, param);
 
 	}
-
-	//	public void findProfileImage(Long shainId) {
-	//		//SQL文の作成
-	//		final String sql = "select profile_image  from shain where user_id=:user_id";
-	//
-	//		// パラメータの作成
-	//		MapSqlParameterSource param = new MapSqlParameterSource();
-	//		param.addValue("user_id", shainId);
-	//
-	//		// SQLの実行
-	//		jdbcTemplate.update(sql, param);
-	//		return jdbcTemplate.queryForObject(sql, new Object[] { userId }, String.class);
-	//	}
 
 	//	@Override
 	//	public void copyShain(Shain shain) {
