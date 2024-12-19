@@ -126,6 +126,25 @@ public class ShainRepositoryImpl implements ShainRepository {
 
 	}
 
+	public void pathsave(Shain shain) {
+		//SQL文の作成
+		final String sql = "update shain set name=:name, sei=:sei, nen=:nen, address=:address "
+				+ "where user_id=:user_id";
+
+		// パラメータの作成
+		MapSqlParameterSource param = new MapSqlParameterSource();
+		param.addValue("id", shain.getId());
+		param.addValue("name", shain.getName());
+		param.addValue("sei", shain.getSei());
+		param.addValue("nen", shain.getNen());
+		param.addValue("address", shain.getAddress());
+		param.addValue("user_id", shain.getUserId());
+
+		// SQLの実行
+		jdbcTemplate.update(sql, param);
+
+	}
+	
 	@Override
 	public void deleteShain(Long shainId) {
 		//SQL文の作成

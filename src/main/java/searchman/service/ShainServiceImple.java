@@ -70,6 +70,21 @@ public class ShainServiceImple implements ShainService {
 
 	}
 
+	//	private static final String UPLOAD_DIR = "/path/to/upload/directory";
+	//
+	//	public String saveProfilePicture(MultipartFile file) throws IOException {
+	//		String fileName = UUID.randomUUID().toString() + "-" + file.getOriginalFilename();
+	//		Path filePath = Paths.get(UPLOAD_DIR, fileName);
+	//		Files.copy(file.getInputStream(), filePath);
+	//		return filePath.toString();
+	//	}
+	//
+	//	public void saveProfilePicturePath(String path) {
+	//		Shain shain = new Shain();
+	//		shain.setProfileImage(path);
+	//		shainRepository.pathsave(shain);
+	//	}
+
 	@Override
 	public void deleteShain(Long shainId) {
 		shainRepository.deleteShain(shainId);

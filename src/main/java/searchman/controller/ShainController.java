@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import searchman.entity.Shain;
 import searchman.entity.User;
@@ -255,37 +256,12 @@ public class ShainController {
 	@PostMapping("/update")
 	public String update(@ModelAttribute Shain request,
 			@RequestParam("username") String username,
-			@RequestParam("role") String role) {
-
-		//		,		@RequestParam(value = "profileImage", required = false) MultipartFile profileImage
+			@RequestParam("role") String role,
+			@RequestParam(value = "profileImage", required = false) MultipartFile profileImage) {
 
 		//パラメータ値から社員作成
 		Shain shain = shainService.makeShain(request);
 
-		// 画像保存
-		//		if (profileImage != null && !profileImage.isEmpty()) {
-		//			try {
-		//				String uploadDir = "src/main/resources/static/img/";
-		//				//				= new File("src/main/resources/img/").getAbsolutePath() + "/";
-		//				String originalFilename = profileImage.getOriginalFilename();
-		//				String uniqueFilename = UUID.randomUUID().toString() + "_" + originalFilename;
-		//				String filePath = uploadDir + uniqueFilename;
-		//
-		//				System.out.println(uploadDir);
-		//				System.out.println(filePath);
-		//
-		//				File uploadDirFile = new File(uploadDir);
-		//				if (!uploadDirFile.exists()) {
-		//					uploadDirFile.mkdirs(); // 
-		//				}
-		//				profileImage.transferTo(new File(filePath));
-		//				shain.setProfileImage(filePath);
-		//			} catch (IOException e) {
-		//				e.printStackTrace();
-		//
-		//				return "redirect:/update";
-		//			}
-		//		}
 		customUserDetailsService.updateUserRole(username, role);
 
 		//DB更新
