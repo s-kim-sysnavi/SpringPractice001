@@ -23,6 +23,13 @@
 .form-button {
 	margin-top: 10px;
 }
+
+.circle-image {
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	object-fit: cover;
+}
 </style>
 </head>
 <body>
@@ -39,9 +46,11 @@
 		<table class="form-table">
 			<tr>
 				<td><label for="file">プロフィール写真:</label></td>
-				<td><img src="/profile/<%=shain.getProfileImage()%>"></td>
+				<td><a href="/profile?userId=<%=shain.getUserId()%>"><img
+						src="/profile/<%=shain.getProfileImage()%>" alt="プロフィール画像"
+						class="circle-image"></a></td>
 
-				<td><input type="file" name="profileImage" /></td>
+
 			</tr>
 
 
@@ -96,6 +105,7 @@
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}">
 			</form>
+
 
 			<form action="index" method="get">
 				<input type="submit" value="一覧画面へ">

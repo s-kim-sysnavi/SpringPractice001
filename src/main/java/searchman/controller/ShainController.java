@@ -1,11 +1,14 @@
 package searchman.controller;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import searchman.entity.Shain;
 import searchman.entity.User;
@@ -226,19 +230,12 @@ public class ShainController {
 	@PostMapping("/update")
 	public String update(@ModelAttribute Shain request,
 			@RequestParam("username") String username,
-			@RequestParam("role") String role, @RequestParam("profileImage") MultipartFile profileImage) {
+			@RequestParam("role") String role) {
 		//
 		//パラメータ値から社員作成
 		Shain shain = shainService.makeShain(request);
 
 		customUserDetailsService.updateUserRole(username, role);
-
-		if (!profileImage.isEmpty()) {
-			String filePath = saveFile(profileImage);
-			shain.setProfileImage(filePath);
-			
-
-		}
 
 		//DB更新
 		shainService.updateShain(shain);
@@ -246,18 +243,6 @@ public class ShainController {
 
 		// リダイレクト
 		return "redirect:/index";
-	}
-
-	private String saveFile(MultipartFile profileImage) {
-		String filePath = "src/main/resources/img/" + profileImage.getOriginalFilename();
-		try {
-			profileImage.transferTo(new File(filePath));
-		} catch (IOException e) {
-			e.printStackTrace();
-
-		}
-		return filePath;
-
 	}
 
 	@GetMapping("/delete")
@@ -286,6 +271,61 @@ public class ShainController {
 
 		// リダイレクト
 		return "redirect:/index";
+	}
+
+	@GetMapping("/profile")
+	public String profile(@RequestParam("userId") Long userId, Model model) {
+
+		//対象データを取得
+		Shain shain = shainService.findByShainId(userId);
+		//		Optional<User> user = userRepository.findById(userId);
+
+		// JSPに渡す
+
+		model.addAttribute("shain", shain);
+
+		return "profile";
+	}
+
+	@Value("${profile.upload.path}") // ファイルパスの保存
+	private String uploadPath;
+
+	@PostMapping("/profile")
+	public String profile(@RequestParam("userId") Long userId,
+			@RequestParam("profileImage") MultipartFile file, Model model, RedirectAttributes redirectAttributes) {
+
+		Shain shain = shainService.findByShainId(userId);
+		model.addAttribute("shain", shain);
+
+		System.out.println(shain.getUserId());
+
+		if (file.isEmpty()) {
+			redirectAttributes.addFlashAttribute("message", "ファイルが選択されていません。");
+			redirectAttributes.addAttribute("userId", userId);
+			return "redirect:/update";
+		}
+
+		try {
+			Path path = Paths.get(uploadPath, file.getOriginalFilename());
+			Files.write(path, file.getBytes());
+			//			// 保存パス生成
+			String fileName = file.getOriginalFilename();
+			//			String filePath = uploadPath + File.separator + fileName;
+			//
+			//			// ファイルを保存
+			//			File dest = new File(filePath);
+			//			file.transferTo(dest);
+
+			// DBに保存
+			shainService.updateProfileImage(userId, fileName);
+
+			redirectAttributes.addFlashAttribute("message", "アップロード成功");
+		} catch (IOException e) {
+			e.printStackTrace();
+			redirectAttributes.addFlashAttribute("message", "エラー発生");
+		}
+		redirectAttributes.addAttribute("userId", userId);
+		return "redirect:/update";
 	}
 
 }

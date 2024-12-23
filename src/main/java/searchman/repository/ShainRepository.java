@@ -19,6 +19,8 @@ public interface ShainRepository {
 
 	//社員削除
 	void deleteShain(Long shainId);
+	
+	void updateProfileImage(Long userId, String profileImage) ;
 
 	//	void pathsave(Shain shain);
 	//

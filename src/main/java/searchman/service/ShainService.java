@@ -19,6 +19,8 @@ public interface ShainService {
 
 	//社員更新
 	void updateShain(Shain shain);
+	
+	void updateProfileImage(Long shainId,String profileImage);
 
 	//社員削除
 	void deleteShain(Long shainId);

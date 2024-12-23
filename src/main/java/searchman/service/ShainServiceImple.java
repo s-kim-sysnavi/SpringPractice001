@@ -53,6 +53,13 @@ public class ShainServiceImple implements ShainService {
 
 	}
 
+	@Override
+	public void updateProfileImage(Long shainId, String profileImage) {
+		shainRepository.updateProfileImage(shainId, profileImage);
+
+	}
+
+	;
 	//	public String saveFile(MultipartFile file) {
 	//
 	//		String filePath = "src/main/resources/img/" + file.getOriginalFilename();

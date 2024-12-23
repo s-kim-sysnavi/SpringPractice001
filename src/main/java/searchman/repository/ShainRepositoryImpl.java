@@ -95,7 +95,7 @@ public class ShainRepositoryImpl implements ShainRepository {
 	@Override
 	public void updateShain(Shain shain) {
 		//SQL文の作成
-		final String sql = "update shain set name=:name, sei=:sei, nen=:nen, address=:address,profile_image =:profile_image "
+		final String sql = "update shain set name=:name, sei=:sei, nen=:nen, address=:address "
 				+ "where user_id=:user_id";
 
 		// パラメータの作成
@@ -106,7 +106,6 @@ public class ShainRepositoryImpl implements ShainRepository {
 		param.addValue("nen", shain.getNen());
 		param.addValue("address", shain.getAddress());
 		param.addValue("user_id", shain.getUserId());
-		param.addValue("user_id", shain.getProfileImage());
 
 		// SQLの実行
 		jdbcTemplate.update(sql, param);
@@ -143,6 +142,24 @@ public class ShainRepositoryImpl implements ShainRepository {
 
 	}
 
+	
+	@Override
+	public void updateProfileImage(Long userId, String profileImage) {
+		//SQL文の作成
+		final String sql = "update shain set profile_image=:profile_image "
+				+  "where user_id=:user_id";
+
+		// パラメータの作成
+		MapSqlParameterSource param = new MapSqlParameterSource();
+		param.addValue("user_id", userId);
+		param.addValue("profile_image", profileImage);
+
+		// SQLの実行
+		jdbcTemplate.update(sql, param);
+
+	}
+	
+	
 	//	public void findProfileImage(Long shainId) {
 	//		//SQL文の作成
 	//		final String sql = "select profile_image  from shain where user_id=:user_id";
