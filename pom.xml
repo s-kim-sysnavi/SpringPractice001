@@ -13,6 +13,7 @@
 	<artifactId>SpringPractice001</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Spring06WEBAPP</name>
+	<packaging>war</packaging>
 	<description>Demo project for Spring Boot</description>
 	<url />
 	<licenses>
@@ -37,29 +38,22 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-		<!--		 ログイン画面用 -->
+		<!--		 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		<!--		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
-		</dependency>-->
-		<!--		<dependency>-->
-		<!--			<groupId>org.thymeleaf.extras</groupId>-->
-		<!--			<artifactId>thymeleaf-extras-springsecurity6</artifactId>-->
-		<!--		</dependency>-->
 
 
 		<!-- Spring Boot Starter Tomcat -->
@@ -88,11 +82,11 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!--		<dependency>-->
-		<!--			<groupId>commons-fileupload</groupId>-->
-		<!--			<artifactId>commons-fileupload</artifactId>-->
-		<!--			<version>1.4</version>-->
-		<!--		</dependency>-->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -107,14 +101,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
+			<artifactId> spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-<!--		<dependency>-->
-		<!--			<groupId>searchman</groupId>-->
-		<!--			<artifactId>Spring06WEBAPP</artifactId>-->
-		<!--			<version>0.0.1-SNAPSHOT</version>-->
-		<!--		</dependency>-->
+
 	</dependencies>
 
 	<build>

@@ -101,4 +101,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 		//			throw new RuntimeException("User not found with username: " + username);
 		//		}
 	}
+
+	//test用
+	public boolean validateUser(String username, String password) {
+		Optional<User> user = userRepository.findByUsername(username);
+
+		return user.isPresent() && user.get().getPassword().equals(password);
+	}
+
 }

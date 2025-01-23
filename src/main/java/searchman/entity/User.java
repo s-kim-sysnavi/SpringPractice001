@@ -66,4 +66,9 @@ public class User {
 	public void setRole(String role) {
 		this.role = role;
 	}
+
+//	public void testUser(String username, String password) {
+//		this.username = username;
+//		this.password = password;
+//	}
 }

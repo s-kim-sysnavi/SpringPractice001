@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,17 +29,13 @@ import searchman.service.ShainService;
 
 @Controller
 public class ShainController {
-
 	@Autowired
 	private ShainService shainService;
+
 	private UserRepository userRepository;
+
 	@Autowired
 	private CustomUserDetailsService customUserDetailsService;
-
-	//	@Autowired
-	//	private UserRepository userRepository;
-	//	@Autowired
-	//	private PasswordEncoder passwordEncoder;
 
 	public ShainController(ShainService shainService, UserRepository userRepository) {
 		this.shainService = shainService;
@@ -47,245 +44,224 @@ public class ShainController {
 
 	@GetMapping("/login")
 	public String login() {
-		return "login"; // login.jsp
+		//		ModelAndView modelAndView = new ModelAndView("login");
+		//		modelAndView.addObject("message", "Welcome to the login page!");
+		//		return modelAndView;
+		return "login";
 	}
 
-	@GetMapping("/register")
-	public String Register() {
-		return "register"; // register.jsp
-	}
+	@PostMapping("/login")
+	public String login(
+			@RequestParam("username") String username,
+			@RequestParam("password") String password) {
 
-	@PostMapping("/register")
-	public String registerUser(@RequestParam String username, @RequestParam String password,
-			@RequestParam String role, Model model, @ModelAttribute Shain request) {
-		try {
-			User user = customUserDetailsService.registerUser(username, password, role); // 会員登録のロジック
-
-			request.setUserId(user.getId());
-			Shain shain = shainService.makeShain(request);
-			shainService.insertShain(shain);
-
-			model.addAttribute("message", username + "様、登録ありがとうございます。");
-
-			//			Shain shain = shainService.makeShain(request);
-			//		}
-			//		;
-
-			//DBに挿入
-			//			shainService.insertShain(shain);
-
-			return "redirect:/login"; // ログイン画面にリダイレクト
-		} catch (IllegalArgumentException e) {
-			return "redirect:/register?error"; // エラー
+		boolean isAuthenticated = authenticateUser(username, password);
+		if (isAuthenticated) {
+			return "redirect:/top";
+		} else {
+			return "redirect:/login?error";
 		}
-
 	}
 
-	@GetMapping("/top")
+	private boolean authenticateUser(String username, String password) {
+
+		return "username".equals(username) && "password".equals(password);
+	}
+
+	//	public String login(Model model,View view) {
+	//		model.addAttribute("message", "Welcome to the login page!");
+	//		return "login";
+	//	}
+
+	@GetMapping({ "/register" })
+	public String register() {
+		return "register";
+	}
+
+	@PostMapping({ "/register" })
+	public String registerUser(@RequestParam String username, @RequestParam String password, @RequestParam String role,
+			Model model, @ModelAttribute Shain request) {
+		try {
+			User user = this.customUserDetailsService.registerUser(username, password, role);
+			request.setUserId(user.getId());
+			Shain shain = this.shainService.makeShain(request);
+			this.shainService.insertShain(shain);
+			model.addAttribute("message", username + "");
+			return "redirect:/login";
+		} catch (IllegalArgumentException e) {
+			return "redirect:/register?error";
+		}
+	}
+
+	@GetMapping({ "/top" })
 	public String top(Model model) {
-
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		String role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-				.map(grantedAuthority -> grantedAuthority.getAuthority())
-				.findFirst().orElse(null);
-
-		Long currentUserId = customUserDetailsService.getLoggedInUserId();
-
+				.map(grantedAuthority -> grantedAuthority.getAuthority()).findFirst().orElse(null);
+		Long currentUserId = this.customUserDetailsService.getLoggedInUserId();
+		Shain shain = this.shainService.findByShainId(currentUserId);
+		model.addAttribute("shain", shain);
 		model.addAttribute("currentUserId", currentUserId);
 		model.addAttribute("username", username);
 		model.addAttribute("role", role);
 		return "top";
 	}
 
-	//	@GetMapping("/profile")
-	//	public String profile() {
-	//		return "profile";
-	//	}
-
-	//	@GetMapping("/")
-	//	public String main(Model model) {
-	//
-	//		return "redirect:/top";
-	//	}
-
-	@GetMapping("/")
+	@GetMapping({ "/" })
 	public String main(Model model) {
-
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		String role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-				.map(grantedAuthority -> grantedAuthority.getAuthority())
-				.findFirst().orElse(null);
-		Long currentUserId = customUserDetailsService.getLoggedInUserId();
-
+				.map(grantedAuthority -> grantedAuthority.getAuthority()).findFirst().orElse(null);
+		Long currentUserId = this.customUserDetailsService.getLoggedInUserId();
+		Shain shain = this.shainService.findByShainId(currentUserId);
+		model.addAttribute("shain", shain);
 		model.addAttribute("currentUserId", currentUserId);
 		model.addAttribute("username", username);
 		model.addAttribute("role", role);
 		return "top";
 	}
 
-	//	@GetMapping("/")
-	//	public String main(Model model) {
-	//
-	//		// リスト取得
-	//		List<Shain> shainList = shainService.findAll();
-	//
-	//		// JSPに渡す
-	//		model.addAttribute("shainList", shainList);
-	//		// JSPに転送
-	//		return "redirect:/index";
-	//	}
-
-	@GetMapping("/index")
+	@GetMapping({ "/index" })
 	public String index(Model model, Model model2, Model model3) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		String role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-				.map(grantedAuthority -> grantedAuthority.getAuthority())
-				.findFirst().orElse(null);
-		Long currentUserId = customUserDetailsService.getLoggedInUserId();
-
-		// リスト取得
-		List<Shain> shainList = shainService.findAll();
-		//		System.out.println(shainList.get(6).getUserId());
-		//
-		//		System.out.println("ログイン" + currentUserId);
-		//		System.out.println("ログイン" + role);
-
-		List<User> users = customUserDetailsService.getAllUsers();
-
+				.map(grantedAuthority -> grantedAuthority.getAuthority()).findFirst().orElse(null);
+		Long currentUserId = this.customUserDetailsService.getLoggedInUserId();
+		List<Shain> shainList = this.shainService.findAll();
+		List<User> users = this.customUserDetailsService.getAllUsers();
 		model2.addAttribute("users", users);
-
-		// JSPに渡す
 		model3.addAttribute("currentUserId", currentUserId);
 		model3.addAttribute("username", username);
 		model3.addAttribute("role", role);
-
-		// JSPに渡す
 		model.addAttribute("shainList", shainList);
-		// JSPに転送
 		return "index";
 	}
 
-	@PostMapping("/insert")
+	@PostMapping({ "/insert" })
 	public String insert(@ModelAttribute Shain request) {
-		//, @RequestParam("userIdEmail") String value
-		//ログインユーザ-情報
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		String role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-				.map(grantedAuthority -> grantedAuthority.getAuthority())
-				.findFirst().orElse(null);
-		Long currentUserId = customUserDetailsService.getLoggedInUserId();
-
-		Shain shain = shainService.makeShain(request);
-
-		//DBに挿入
-		shainService.insertShain(shain);
-
-		// リダイレクト
+				.map(grantedAuthority -> grantedAuthority.getAuthority()).findFirst().orElse(null);
+		Long currentUserId = this.customUserDetailsService.getLoggedInUserId();
+		Shain shain = this.shainService.makeShain(request);
+		this.shainService.insertShain(shain);
 		return "redirect:/index";
-
 	}
 
-	@GetMapping("/update")
+	@GetMapping({ "/update" })
 	public String update(@RequestParam("userId") Long userId, Model model, Model model2) {
-
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		String role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-				.map(grantedAuthority -> grantedAuthority.getAuthority())
-				.findFirst().orElse(null);
-		Long currentUserId = customUserDetailsService.getLoggedInUserId();
-
-		//対象データを取得
-		Shain shain = shainService.findByShainId(userId);
-		Optional<User> user = userRepository.findById(userId);
-		//		System.out.println(shain.getUserId());
-		//		System.out.println("ログイン" + currentUserId);
-		//		System.out.println("ログイン" + role);
-
+				.map(grantedAuthority -> grantedAuthority.getAuthority()).findFirst().orElse(null);
+		Long currentUserId = this.customUserDetailsService.getLoggedInUserId();
+		Shain shain = this.shainService.findByShainId(userId);
+		Optional<User> user = this.userRepository.findById(userId);
 		user.ifPresent(value -> model2.addAttribute("user", value));
-		// JSPに渡す
 		model.addAttribute("currentUserId", currentUserId);
 		model.addAttribute("username", username);
 		model.addAttribute("role", role);
 		model.addAttribute("shain", shain);
+		if (!"ADMIN".equals(role))
+			if (role != "ADMIN" && currentUserId != shain.getUserId())
+				return "redirect:/top";
+		return "update";
+		//		if (!"ROLE_ADMIN".equals(role))
+		//			if (role != "ROLE_ADMIN" && currentUserId != shain.getUserId())
+		//				return "redirect:/top";
+		//		return "update";
+	}
 
-		//		Integer userIdif = shain.getUserId();
-		//		System.out.println(userIdif );
-		//		System.out.println("AAAA" );
+	@PostMapping({ "/update" })
+	public String update(@ModelAttribute Shain request, @RequestParam("username") String username,
+			@RequestParam("role") String role) {
+		Shain shain = this.shainService.makeShain(request);
+		this.customUserDetailsService.updateUserRole(username, role);
+		this.shainService.updateShain(shain);
+		//		this.shainService.updateShain(shain);
+		return "redirect:/index";
+	}
 
-		if ("ADMIN".equals(role)) {
-			//			System.out.println("成功");
-		} else if (role != "ADMIN" && currentUserId != shain.getUserId()) {
+	@GetMapping({ "/delete" })
+	public String delete(@RequestParam("userId") Long userId, Model model) {
+		//		Shain shain = this.shainService.findByShainId(userId);
+		//		model.addAttribute("shain", shain);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		String role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+				.map(grantedAuthority -> grantedAuthority.getAuthority()).findFirst().orElse(null);
+		Long currentUserId = this.customUserDetailsService.getLoggedInUserId();
+		Shain shain = this.shainService.findByShainId(userId);
+		Optional<User> user = this.userRepository.findById(userId);
+		user.ifPresent(value -> model.addAttribute("user", value));
+		model.addAttribute("currentUserId", currentUserId);
+		model.addAttribute("username", username);
+		model.addAttribute("role", role);
+		model.addAttribute("shain", shain);
+		if (!"ADMIN".equals(role))
 			return "redirect:/top";
+		return "delete";
+		//		if (!"ROLE_ADMIN".equals(role))
+		//			return "redirect:/top";
+		//		return "delete";
+	}
+
+	@PostMapping({ "/delete" })
+	public String delete(@RequestParam("userId") Long userId) {
+		this.shainService.deleteShain(userId);
+		Optional<User> user = this.userRepository.findById(userId);
+		Objects.requireNonNull(this.userRepository);
+		user.ifPresent(this.userRepository::delete);
+		return "redirect:/index";
+	}
+
+	@GetMapping({ "/profile" })
+	public String profile(@RequestParam("userId") Long userId, Model model, Model model2) {
+		Shain shain = this.shainService.findByShainId(userId);
+		model.addAttribute("shain", shain);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		String role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+				.map(grantedAuthority -> grantedAuthority.getAuthority()).findFirst().orElse(null);
+		Long currentUserId = this.customUserDetailsService.getLoggedInUserId();
+		Optional<User> user = this.userRepository.findById(userId);
+		user.ifPresent(value -> model2.addAttribute("user", value));
+		model.addAttribute("currentUserId", currentUserId);
+		model.addAttribute("username", username);
+		model.addAttribute("role", role);
+		model.addAttribute("shain", shain);
+		if (!"ADMIN".equals(role)) {
+			if (role != "ADMIN" && currentUserId != shain.getUserId()) {
+				return "redirect:/top";
+			}
 		}
 
-		// JSPに転送
-		return "update";
-	}
-
-	@PostMapping("/update")
-	public String update(@ModelAttribute Shain request,
-			@RequestParam("username") String username,
-			@RequestParam("role") String role) {
-		//
-		//パラメータ値から社員作成
-		Shain shain = shainService.makeShain(request);
-
-		customUserDetailsService.updateUserRole(username, role);
-
-		//DB更新
-		shainService.updateShain(shain);
-		shainService.updateShain(shain);
-
-		// リダイレクト
-		return "redirect:/index";
-	}
-
-	@GetMapping("/delete")
-	public String delete(
-			@RequestParam("userId") Long userId,
-			Model model) {
-
-		//対象データを取得
-		Shain shain = shainService.findByShainId(userId);
-
-		// JSPに渡す
-		model.addAttribute("shain", shain);
-
-		// JSPに転送
-		return "delete";
-	}
-
-	@PostMapping("/delete")
-	public String delete(
-			@RequestParam("userId") Long userId) {
-
-		//DBから削除
-		shainService.deleteShain(userId);
-		Optional<User> user = userRepository.findById(userId);
-		user.ifPresent(userRepository::delete);
-
-		// リダイレクト
-		return "redirect:/index";
-	}
-
-	@GetMapping("/profile")
-	public String profile(@RequestParam("userId") Long userId, Model model) {
-
-		//対象データを取得
-		Shain shain = shainService.findByShainId(userId);
-		//		Optional<User> user = userRepository.findById(userId);
-
-		// JSPに渡す
-
-		model.addAttribute("shain", shain);
-
+		//テスト用
+		//		if (!"ROLE_ADMIN".equals(role)) {
+		//			if (role != "ROLE_ADMIN" && currentUserId != shain.getUserId()) {
+		//				return "redirect:/top";
+		//			}
+		//		}
 		return "profile";
 	}
+
+	//	@PostMapping({ "/profile" })
+	//	public String profile(@RequestParam("userId") Long userId, Model model) {
+	//
+	//		//対象データを取得
+	//		Shain shain = shainService.findByShainId(userId);
+	//		//		Optional<User> user = userRepository.findById(userId);
+	//
+	//		// JSPに渡す
+	//
+	//		model.addAttribute("shain", shain);
+	//
+	//		return "profile";
+	//	}
 
 	@Value("${profile.upload.path}") // ファイルパスの保存
 	private String uploadPath;
@@ -327,5 +303,4 @@ public class ShainController {
 		redirectAttributes.addAttribute("userId", userId);
 		return "redirect:/update";
 	}
-
 }

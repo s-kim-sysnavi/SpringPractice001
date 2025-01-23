@@ -4,41 +4,118 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<style>
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	box-sizing: border-box;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+header {
+	height: 50px;
+	background-color: rgb(0, 200, 255);
+	color: white;
+	text-align: center;
+	line-height: 50px;
+}
+
+main {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	flex: 1;
+	padding: 20px;
+	background-color: #f5f5f5;
+	box-sizing: border-box;
+}
+
+footer {
+	height: 50px;
+	background-color: rgb(0, 200, 255);
+	color: white;
+	text-align: center;
+	line-height: 50px;
+}
+
+.button-link {
+	display: inline-block;
+	padding: 10px 20px;
+	color: white;
+	background-color: #007BFF;
+	text-decoration: none;
+	border-radius: 5px;
+	font-size: 11px;
+}
+
+.button-link:hover {
+	background-color: #0056b3;
+}
+</style>
 <title>Insert title here</title>
 </head>
 <body>
-	<h3 th:text="${message}"></h3>
-	<h1>会員登録画面</h1>
-	<form action="/register" method="post">
-		<label for="username">username:</label> <input type="text"
-			id="username" name="username" required /> <label for="password">password:</label>
-		<input type="password" id="password" name="password" required />
-		<td><label for="name">名前:</label></td>
-		<td><input type="text" id="name" name="name" class="form-input"
-			required></td> <input type="hidden" name="role" value="USER">
-		<td><label for="sei">姓:</label></td>
-		<td><select id="sei" name="sei" class="form-input" required>
-				<option value="">選択してください</option>
-				<option value="男">男</option>
-				<option value="女">女</option>
-		</select></td>
-		<td><label for="address">住所:</label></td>
-		<td><input type="text" id="address" name="address"
-			class="form-input" required></td>
-		<td><label for="nen">入社年度:</label></td>
-		<td><select id="nen" name="nen" class="form-input" required>
-				<option value="">選択してください</option>
-				<%
-				for (int year = 2001; year <= 2024; year++) {
-				%>
-				<option value="<%=year%>"><%=year%></option>
-				<%
-}
-%>
+	<div class="container">
 
-		</select></td> <input type="hidden" name="${_csrf.parameterName}"
-			value="${_csrf.token}">
-			<input type="hidden" name="profileImage" value="default.png">
-		<button type="submit">登録する</button>
+		<header> ヘッダー </header>
+		<main>
+			<h3 th:text="${message}"></h3>
+			<h1>会員登録画面</h1>
+			<form action="/register" method="post">
+				<p>
+					<label for="username">username:</label> <input type="text"
+						id="username" name="username" required />
+				</p>
+				<p>
+					<label for="password">password:</label> <input type="password"
+						id="password" name="password" required />
+				</p>
+				<p>
+					<label for="name">名前:</label> <input type="text" id="name"
+						name="name" class="form-input" required>
+				</p>
+				<p>
+					<input type="hidden" name="role" value="USER">
+				<p>
+					<label for="sei">姓:</label> <select id="sei" name="sei"
+						class="form-input" required>
+						<option value="">選択してください</option>
+						<option value="男">男</option>
+						<option value="女">女</option>
+					</select>
+				</p>
+				<p>
+					<label for="address">住所:</label> <input type="text" id="address"
+						name="address" class="form-input" required>
+				</p>
+				<p>
+					<label for="nen">入社年度:</label> <select id="nen" name="nen"
+						class="form-input" required>
+						<option value="">選択してください</option>
+						<%
+						for (int year = 2001; year <= 2024; year++) {
+						%>
+						<option value="<%=year%>"><%=year%></option>
+						<%
+						}
+						%>
+
+					</select>
+				</p>
+				<input type="hidden" name="${_csrf.parameterName}"
+					value="${_csrf.token}"> <input type="hidden"
+					name="profileImage" value="default.png">
+				<button class="button-link" type="submit">登録する</button>
+				<a href="login" class="button-link">ログイン画面に戻る</a>
+		</main>
+		<footer> フッター</footer>
+	</div>
 </body>
 </html>

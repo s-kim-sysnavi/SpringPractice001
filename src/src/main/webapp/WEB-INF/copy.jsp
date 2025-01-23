@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>複製内容確認画面</title>
+<title></title>
 <style>
 .form-input {
 	width: 100%;
@@ -25,19 +25,19 @@
 </style>
 </head>
 <body>
-	<%-- shainから社員情報を取得する --%>
+	<%-- shain--%>
 	<%
 	Shain shain = (Shain) request.getAttribute("shain");
 	%>
-	<h1>複製内容確認画面</h1>
+	<h1></h1>
 	<form action="copy" method="post">
 		<table class="form-table">
 			<tr>
-				<td><label for="name">名前:</label></td>
+				<td><label for="name"></label></td>
 				<td><%=shain.getName()%></td>
 			</tr>
 			<tr>
-				<td><label for="sei">姓:</label></td>
+				<td><label for="sei"></label></td>
 				<td><%=shain.getSei()%></td>
 			</tr>
 			<tr>
@@ -45,15 +45,15 @@
 				<td><%=shain.getEmail()%></td>
 			</tr>
 			<tr>
-				<td><label for="address">住所:</label></td>
+				<td><label for="address"></label></td>
 				<td><%=shain.getAddress()%></td>
 			</tr>
 			<tr>
-				<td><label for="nen">入社年度:</label></td>
+				<td><label for="nen"></label></td>
 				<td><%=shain.getNen()%></td>
 			</tr>
 		</table>
-		<button type="submit" class="form-button">複製</button>
+		<button type="submit" class="form-button"></button>
 		<input type="hidden" name="name" value="<%=shain.getName()%>">
 		<input type="hidden" name="sei" value="<%=shain.getSei()%>"> <input
 			type="hidden" name="nen" value="<%=shain.getNen()%>"><input
@@ -62,7 +62,7 @@
 			value="${_csrf.token}">
 	</form>
 	<form action="index" method="get">
-		<input type="submit" value="一覧画面へ">
+		<input type="submit" value=">
 	</form>
 </body>
 </html>
