@@ -8,19 +8,20 @@ User user = (User) request.getAttribute("user");
 %>
 <head>
 <style>
-body {
+html, body {
 	margin: 0;
 	padding: 0;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	min-height: 100vh;
-	background-color: #f5f5f5;
+	height: 100%;
+	box-sizing: border-box;
 }
 
-header, footer {
-	width: 100%;
+.container {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+header {
 	height: 50px;
 	background-color: rgb(0, 200, 255);
 	color: white;
@@ -29,11 +30,22 @@ header, footer {
 }
 
 main {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	flex: 1;
+	padding: 20px;
+	background-color: #f5f5f5;
+	box-sizing: border-box;
+}
+
+footer {
+	height: 50px;
+	background-color: rgb(0, 200, 255);
+	color: white;
 	text-align: center;
-	background-color: white;
-	padding: 150px;
-	border: 1px solid #ccc;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	line-height: 50px;
 }
 
 .button-link {
@@ -52,7 +64,7 @@ main {
 }
 
 .drag-and-drop {
-	width: 100%;
+	width: 60%;
 	height: 100px;
 	border: 2px dashed #007BFF;
 	border-radius: 10px;
@@ -94,55 +106,62 @@ main {
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 	border-color: #007BFF;
 }
+
+.dragged {
+	background-color: #555;
+	color: white;
 }
 </style>
 <title>プロフィール画像</title>
 </head>
 <body>
 	<script src="/js/profile_upload.js"></script>
-	<header> ヘッダー </header>
-	<main>
-		<p><%=shain.getUserId()%></p>
-		<p>
-			<label for="file">▼現在のプロフィール画像:</label>
-		</p>
-		<p>
-			<img src="/profile/<%=shain.getProfileImage()%>" alt="プロフィール画像"
-				class="circle-image">
-		</p>
-
-		<p>▼今回、アップロードする画像</p>
-		<p>
-		<div id="drag-and-drop" class="drag-and-drop">
-			<p>ここにファイルをドラッグアンドドロップしてください。</p>
-		</div>
-		</p>
-
-		<p id="file-info"></p>
-		<div id="preview" class="preview"></div>
-
-		<form id="upload-form" action="/profile" method="post"
-			enctype="multipart/form-data">
-			<input type="hidden" name="userId" value="<%=shain.getUserId()%>">
-			<input type="file" name="profileImage" id="file"
-				style="display: none;"> <input type="hidden"
-				name="${_csrf.parameterName}" value="${_csrf.token}">
+	<div class="container">
+		<header> ヘッダー </header>
+		<main>
+			<p><%=shain.getUserId()%></p>
 			<p>
-				<button type="submit" class="button-link">アップロード</button>
+				<label for="file">▼現在のプロフィール画像:</label>
 			</p>
-		</form>
+			<p>
+				<img src="/profile/<%=shain.getProfileImage()%>" alt="プロフィール画像"
+					class="circle-image">
+			</p>
 
-		</p>
-		<p>
-			<a href="update?userId=<%=shain.getUserId()%>" class="button-link">プロフィール修正画面へ戻る</a>
-		</p>
-		<!-- 「トップ画面へ」ボタン -->
-		<p>
-		<form action="top" method="get">
-			<input type="submit" value="トップ画面へ" class="button-link">
-		</form>
-		</p>
-	</main>
-	<footer> フッター</footer>
+			<p>▼今回、アップロードする画像</p>
+			<p>
+			<div id="drag-and-drop" class="drag-and-drop">
+				<p>ここにファイルをドラッグアンドドロップしてください。</p>
+			</div>
+			</p>
+
+			<p id="file-info"></p>
+			<div id="preview" class="preview"></div>
+
+			<form id="upload-form" action="/profile" method="post"
+				enctype="multipart/form-data">
+				<input type="hidden" name="userId" value="<%=shain.getUserId()%>">
+				<input type="file" name="profileImage" id="file"
+					style="display: none;"> <input type="hidden"
+					name="${_csrf.parameterName}" value="${_csrf.token}">
+				<p>
+					<button type="submit" class="button-link">アップロード</button>
+				</p>
+			</form>
+
+			</p>
+			<p>
+				<a href="update?userId=<%=shain.getUserId()%>" class="button-link">プロフィール修正画面へ戻る</a>
+			</p>
+			<!-- 「トップ画面へ」ボタン -->
+			<p>
+			<form action="top" method="get">
+				<input type="submit" value="トップ画面へ" class="button-link">
+			</form>
+			</p>
+		</main>
+		<footer> フッター</footer>
+	</div>
+	>
 </body>
 </html>

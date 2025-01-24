@@ -26,12 +26,13 @@
 .button-link {
 	display: inline-block;
 	padding: 10px 20px;
-	margin:5px;
+	margin: 5px;
 	color: white;
 	background-color: #007BFF;
 	text-decoration: none;
 	border-radius: 5px;
 	font-size: 11px;
+	border: none;
 }
 
 .button-link:hover {
@@ -88,6 +89,7 @@ footer {
 	text-align: center;
 	line-height: 50px;
 }
+
 .delete-info {
 	background-color: #808080;
 	color: white;
@@ -109,7 +111,7 @@ footer {
 			Shain shain = (Shain) request.getAttribute("shain");
 			%>
 			<h1>社員情報削除画面</h1>
-			<form action="delete" method="post" class = "delete-info">
+			<form action="delete" method="post" class="delete-info">
 				<table class="form-table">
 					<tr>
 						<td><label for="userId">ID:</label></td>

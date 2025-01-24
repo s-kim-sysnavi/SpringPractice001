@@ -49,11 +49,20 @@ footer {
 .button-link {
 	display: inline-block;
 	padding: 10px 20px;
-	color: white;
+	margin: 10px; color : white;
 	background-color: #007BFF;
 	text-decoration: none;
 	border-radius: 5px;
 	font-size: 11px;
+	border: none;
+	color: white
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .button-link:hover {
