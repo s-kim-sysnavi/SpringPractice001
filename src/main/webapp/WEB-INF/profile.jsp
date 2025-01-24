@@ -44,44 +44,95 @@ main {
 	text-decoration: none;
 	border-radius: 5px;
 	font-size: 11px;
+	border: none;
 }
 
 .button-link:hover {
 	background-color: #0056b3;
 }
+
+.drag-and-drop {
+	width: 100%;
+	height: 100px;
+	border: 2px dashed #007BFF;
+	border-radius: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #f9f9f9;
+	color: #999;
+}
+
+.drag-and-drop.dragover {
+	background-color: #e0e0e0;
+	border-color: #0056b3;
+}
+
+.circle-image {
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	object-fit: cover;
+	transition: box-shadow 0.3s ease;
+}
+
+.preview {
+	display: flex;
+	flex-wrap: wrap;
+	margin-top: 10px;
+	gap: 10px;
+	justify-content: center;
+	align-items: center;
+}
+
+.preview img {
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 2px solid #ccc;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+	border-color: #007BFF;
+}
+}
 </style>
 <title>プロフィール画像</title>
 </head>
 <body>
+	<script src="/js/profile_upload.js"></script>
 	<header> ヘッダー </header>
 	<main>
 		<p><%=shain.getUserId()%></p>
 		<p>
-			<label for="file">現在のプロフィール写真:</label>
+			<label for="file">▼現在のプロフィール画像:</label>
 		</p>
 		<p>
 			<img src="/profile/<%=shain.getProfileImage()%>" alt="プロフィール画像"
 				class="circle-image">
 		</p>
 
+		<p>▼今回、アップロードする画像</p>
 		<p>
-		<form action="/profile" method="post" enctype="multipart/form-data" >
-			<p>
-				<label for="file">新しいプロフィル画像を追加:</label>
-			</p>
-			<p>
-				<input type="file" name="profileImage" id="file">
-			</p>
+		<div id="drag-and-drop" class="drag-and-drop">
+			<p>ここにファイルをドラッグアンドドロップしてください。</p>
+		</div>
+		</p>
 
+		<p id="file-info"></p>
+		<div id="preview" class="preview"></div>
+
+		<form id="upload-form" action="/profile" method="post"
+			enctype="multipart/form-data">
+			<input type="hidden" name="userId" value="<%=shain.getUserId()%>">
+			<input type="file" name="profileImage" id="file"
+				style="display: none;"> <input type="hidden"
+				name="${_csrf.parameterName}" value="${_csrf.token}">
 			<p>
 				<button type="submit" class="button-link">アップロード</button>
 			</p>
-			<input type="hidden" name="userId" value="<%=shain.getUserId()%>">
-			<input type="hidden" name="${_csrf.parameterName}"
-				value="${_csrf.token}">
 		</form>
-		</p>
 
+		</p>
 		<p>
 			<a href="update?userId=<%=shain.getUserId()%>" class="button-link">プロフィール修正画面へ戻る</a>
 		</p>

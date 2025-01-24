@@ -69,6 +69,7 @@ footer {
 	text-decoration: none;
 	border-radius: 5px;
 	font-size: 11px;
+	border: none;
 }
 
 .button-link:hover {
