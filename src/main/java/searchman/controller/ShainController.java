@@ -66,6 +66,7 @@ public class ShainController {
 	//		return "username".equals(username) && "password".equals(password);
 	//	}
 
+	
 	@GetMapping({ "/register" })
 	public String register() {
 		return "register";

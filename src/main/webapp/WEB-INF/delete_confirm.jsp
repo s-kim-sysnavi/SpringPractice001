@@ -11,6 +11,7 @@
 	width: 100%;
 }
 
+
 .form-table td {
 	padding: 5px;
 }

@@ -4,6 +4,7 @@
 <%@page import="searchman.entity.User"%>
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta charset="UTF-8">
 <title>プロフィール修正画面</title>

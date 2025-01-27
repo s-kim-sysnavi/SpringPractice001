@@ -3,7 +3,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8"
+
 <style>
 html, body {
 	margin: 0;

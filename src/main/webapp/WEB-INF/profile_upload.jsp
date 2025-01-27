@@ -7,6 +7,7 @@ Shain shain = (Shain) request.getAttribute("shain");
 User user = (User) request.getAttribute("user");
 %>
 <head>
+
 <style>
 html, body {
 	margin: 0;
