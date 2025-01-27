@@ -139,9 +139,9 @@ th, td {
 				<td><%=shain.getAddress()%></td>
 				<td><%=shain.getNen()%></td>
 
-				<td><a href="update?userId=<%=shain.getUserId()%>"
+				<td><a href="update_confirm?userId=<%=shain.getUserId()%>"
 					class="button-link">変更</a></td>
-				<td><a href="delete?userId=<%=shain.getUserId()%>"
+				<td><a href="delete_confirm?userId=<%=shain.getUserId()%>"
 					class="button-link">削除</a></td>
 				<!--<td><a href="copy?userId=">複製</a></td>-->
 			</tr>
@@ -192,7 +192,7 @@ th, td {
 					<td><%=shain.getAddress()%></td>
 					<td><%=shain.getNen()%></td>
 
-					<td><a href="update?userId=<%=shain.getUserId()%>">変更</a></td>
+					<td><a href="update_confirm?userId=<%=shain.getUserId()%>">変更</a></td>
 
 				</tr>
 				<%

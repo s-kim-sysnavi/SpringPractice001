@@ -111,7 +111,7 @@ footer {
 			Long currentUserId = (Long) request.getAttribute("currentUserId");
 			Shain shain = (Shain) request.getAttribute("shain");
 			%>
-			<p>TSET用：8</p>
+			<p>TSET用：250127_1</p>
 			<p>
 				<label for="file">プロフィール写真:</label>
 			</p>
@@ -119,7 +119,7 @@ footer {
 				<%
 				if (shain != null) {
 				%>
-				<a href="/profile?userId=<%=shain.getUserId()%>"> <img
+				<a href="/profile_upload?userId=<%=shain.getUserId()%>"> <img
 					src="/profile/<%=shain.getProfileImage()%>" alt="プロフィール画像"
 					class="circle-image">
 				</a>
@@ -135,7 +135,7 @@ footer {
 			</p>
 
 
-			<a href="update?userId=<%=currentUserId%>" class="button-link">プロフィール修正</a>
+			<a href="update_confirm?userId=<%=currentUserId%>" class="button-link">プロフィール修正</a>
 			</li> <a href="index" class="button-link">社員情報一覧</a>
 			<!--  
 		String role = (String) request.getAttribute("

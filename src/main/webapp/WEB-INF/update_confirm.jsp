@@ -124,7 +124,7 @@ table.form-table {
 				<table class="form-table">
 					<tr>
 						<td><label for="file">プロフィール写真:</label></td>
-						<td><a href="/profile?userId=<%=shain.getUserId()%>"><img
+						<td><a href="/profile_upload?userId=<%=shain.getUserId()%>"><img
 								src="/profile/<%=shain.getProfileImage()%>" alt="プロフィール画像"
 								class="circle-image"></a></td>
 

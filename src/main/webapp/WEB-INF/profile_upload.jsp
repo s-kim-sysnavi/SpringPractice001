@@ -129,16 +129,17 @@ footer {
 			</p>
 
 			<p>▼今回、アップロードする画像</p>
+			<p id="file-info"></p>
+			<div id="preview" class="preview"></div>
 			<p>
 			<div id="drag-and-drop" class="drag-and-drop">
 				<p>ここにファイルをドラッグアンドドロップしてください。</p>
 			</div>
 			</p>
 
-			<p id="file-info"></p>
-			<div id="preview" class="preview"></div>
 
-			<form id="upload-form" action="/profile" method="post"
+
+			<form id="upload-form" action="/profile_success" method="post"
 				enctype="multipart/form-data">
 				<input type="hidden" name="userId" value="<%=shain.getUserId()%>">
 				<input type="file" name="profileImage" id="file"
@@ -151,7 +152,8 @@ footer {
 
 			</p>
 			<p>
-				<a href="update?userId=<%=shain.getUserId()%>" class="button-link">プロフィール修正画面へ戻る</a>
+				<a href="update_confirm?userId=<%=shain.getUserId()%>"
+					class="button-link">プロフィール修正画面へ戻る</a>
 			</p>
 			<!-- 「トップ画面へ」ボタン -->
 			<p>

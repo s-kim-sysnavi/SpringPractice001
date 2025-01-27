@@ -44,33 +44,26 @@ public class ShainController {
 
 	@GetMapping("/login")
 	public String login() {
-		//		ModelAndView modelAndView = new ModelAndView("login");
-		//		modelAndView.addObject("message", "Welcome to the login page!");
-		//		return modelAndView;
 		return "login";
 	}
 
-	@PostMapping("/login")
-	public String login(
-			@RequestParam("username") String username,
-			@RequestParam("password") String password) {
+	//Test用
+	//	@PostMapping("/login_success")
+	//	public String login_success(
+	//			@RequestParam("username") String username,
+	//			@RequestParam("password") String password) {
+	//
+	//		boolean isAuthenticated = authenticateUser(username, password);
+	//		if (isAuthenticated) {
+	//			return "redirect:/top";
+	//		} else {
+	//			return "redirect:/login?error";
+	//		}
+	//	}
 
-		boolean isAuthenticated = authenticateUser(username, password);
-		if (isAuthenticated) {
-			return "redirect:/top";
-		} else {
-			return "redirect:/login?error";
-		}
-	}
-
-	private boolean authenticateUser(String username, String password) {
-
-		return "username".equals(username) && "password".equals(password);
-	}
-
-	//	public String login(Model model,View view) {
-	//		model.addAttribute("message", "Welcome to the login page!");
-	//		return "login";
+	//	private boolean authenticateUser(String username, String password) {
+	//
+	//		return "username".equals(username) && "password".equals(password);
 	//	}
 
 	@GetMapping({ "/register" })
@@ -78,7 +71,7 @@ public class ShainController {
 		return "register";
 	}
 
-	@PostMapping({ "/register" })
+	@PostMapping({ "/register_success" })
 	public String registerUser(@RequestParam String username, @RequestParam String password, @RequestParam String role,
 			Model model, @ModelAttribute Shain request) {
 		try {
@@ -140,19 +133,7 @@ public class ShainController {
 		return "index";
 	}
 
-	@PostMapping({ "/insert" })
-	public String insert(@ModelAttribute Shain request) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String username = authentication.getName();
-		String role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-				.map(grantedAuthority -> grantedAuthority.getAuthority()).findFirst().orElse(null);
-		Long currentUserId = this.customUserDetailsService.getLoggedInUserId();
-		Shain shain = this.shainService.makeShain(request);
-		this.shainService.insertShain(shain);
-		return "redirect:/index";
-	}
-
-	@GetMapping({ "/update" })
+	@GetMapping({ "/update_confirm" })
 	public String update(@RequestParam("userId") Long userId, Model model, Model model2) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
@@ -169,7 +150,9 @@ public class ShainController {
 		if (!"ADMIN".equals(role))
 			if (role != "ADMIN" && currentUserId != shain.getUserId())
 				return "redirect:/top";
-		return "update";
+		return "update_confirm";
+
+		//テスト用
 		//		if (!"ROLE_ADMIN".equals(role))
 		//			if (role != "ROLE_ADMIN" && currentUserId != shain.getUserId())
 		//				return "redirect:/top";
@@ -177,19 +160,16 @@ public class ShainController {
 	}
 
 	@PostMapping({ "/update" })
-	public String update(@ModelAttribute Shain request, @RequestParam("username") String username,
+	public String updateSuccess(@ModelAttribute Shain request, @RequestParam("username") String username,
 			@RequestParam("role") String role) {
 		Shain shain = this.shainService.makeShain(request);
 		this.customUserDetailsService.updateUserRole(username, role);
 		this.shainService.updateShain(shain);
-		//		this.shainService.updateShain(shain);
 		return "redirect:/index";
 	}
 
-	@GetMapping({ "/delete" })
+	@GetMapping({ "/delete_confirm" })
 	public String delete(@RequestParam("userId") Long userId, Model model) {
-		//		Shain shain = this.shainService.findByShainId(userId);
-		//		model.addAttribute("shain", shain);
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		String role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
@@ -204,14 +184,16 @@ public class ShainController {
 		model.addAttribute("shain", shain);
 		if (!"ADMIN".equals(role))
 			return "redirect:/top";
-		return "delete";
+		return "delete_confirm";
+
+		//テスト用
 		//		if (!"ROLE_ADMIN".equals(role))
 		//			return "redirect:/top";
 		//		return "delete";
 	}
 
 	@PostMapping({ "/delete" })
-	public String delete(@RequestParam("userId") Long userId) {
+	public String deleteSuccess(@RequestParam("userId") Long userId) {
 		this.shainService.deleteShain(userId);
 		Optional<User> user = this.userRepository.findById(userId);
 		Objects.requireNonNull(this.userRepository);
@@ -219,7 +201,7 @@ public class ShainController {
 		return "redirect:/index";
 	}
 
-	@GetMapping({ "/profile" })
+	@GetMapping({ "/profile_upload" })
 	public String profile(@RequestParam("userId") Long userId, Model model, Model model2) {
 		Shain shain = this.shainService.findByShainId(userId);
 		model.addAttribute("shain", shain);
@@ -246,28 +228,14 @@ public class ShainController {
 		//				return "redirect:/top";
 		//			}
 		//		}
-		return "profile";
+		return "profile_upload";
 	}
-
-	//	@PostMapping({ "/profile" })
-	//	public String profile(@RequestParam("userId") Long userId, Model model) {
-	//
-	//		//対象データを取得
-	//		Shain shain = shainService.findByShainId(userId);
-	//		//		Optional<User> user = userRepository.findById(userId);
-	//
-	//		// JSPに渡す
-	//
-	//		model.addAttribute("shain", shain);
-	//
-	//		return "profile";
-	//	}
 
 	@Value("${profile.upload.path}") // ファイルパスの保存
 	private String uploadPath;
 
-	@PostMapping("/profile")
-	public String profile(@RequestParam("userId") Long userId,
+	@PostMapping("/profile_success")
+	public String profileSuccess(@RequestParam("userId") Long userId,
 			@RequestParam("profileImage") MultipartFile file, Model model, RedirectAttributes redirectAttributes) {
 
 		Shain shain = shainService.findByShainId(userId);
@@ -278,7 +246,7 @@ public class ShainController {
 		if (file.isEmpty()) {
 			redirectAttributes.addFlashAttribute("message", "ファイルが選択されていません。");
 			redirectAttributes.addAttribute("userId", userId);
-			return "redirect:/update";
+			return "redirect:/update_confirm";
 		}
 
 		try {
@@ -286,11 +254,6 @@ public class ShainController {
 			Files.write(path, file.getBytes());
 			//			// 保存パス生成
 			String fileName = file.getOriginalFilename();
-			//			String filePath = uploadPath + File.separator + fileName;
-			//
-			//			// ファイルを保存
-			//			File dest = new File(filePath);
-			//			file.transferTo(dest);
 
 			// DBに保存
 			shainService.updateProfileImage(userId, fileName);
@@ -301,6 +264,6 @@ public class ShainController {
 			redirectAttributes.addFlashAttribute("message", "エラー発生");
 		}
 		redirectAttributes.addAttribute("userId", userId);
-		return "redirect:/update";
+		return "redirect:/update_confirm";
 	}
 }

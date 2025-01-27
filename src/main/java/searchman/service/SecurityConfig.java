@@ -41,11 +41,11 @@ public class SecurityConfig {
 
 				.authorizeHttpRequests(auth -> auth
 
-						.requestMatchers("/copy").hasAuthority("ADMIN") // ADMINユーザーのみアクセス可能
 						// test用
 						//						.requestMatchers("/delete", "/copy").hasRole("ADMIN") 
-						.requestMatchers("/login", "/js/**", "/WEB-INF/**", "/register").permitAll() // カスタマイズしたページの許可
 
+						.requestMatchers("/login", "/js/**", "/WEB-INF/**", "/register", "/register_success")
+						.permitAll() // カスタマイズしたページの許可
 						.anyRequest().authenticated() // その他は認証必要
 				)
 

@@ -1,15 +1,31 @@
 package searchman.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "shain")
 public class Shain {
 	//社員属性(プロパティ)
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT
 	private int id;
+	@Column(nullable = true)
 	private String name;
+	@Column(nullable = true)
 	private String sei;
+	@Column(nullable = true)
 	private int nen;
+	@Column(nullable = true)
 	private String address;
-
+	@Column(unique = true, nullable = true)
 	private Long userId;
+	@Column(nullable = true)
 	private String profileImage;
 
 	public int getId() {

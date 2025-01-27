@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 public class User {
 	//ログインユーザー情報
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT 설정
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT
 	private Long id;
 
 	@Column(nullable = false, unique = true) //ユニーク、Nullはできない
@@ -20,7 +20,7 @@ public class User {
 
 	@Column(nullable = false) //Nullはできない
 	private String password;
-
+	@Column(nullable = true)
 	private String role;
 
 	//spring security用
@@ -67,8 +67,8 @@ public class User {
 		this.role = role;
 	}
 
-//	public void testUser(String username, String password) {
-//		this.username = username;
-//		this.password = password;
-//	}
+	//	public void testUser(String username, String password) {
+	//		this.username = username;
+	//		this.password = password;
+	//	}
 }
