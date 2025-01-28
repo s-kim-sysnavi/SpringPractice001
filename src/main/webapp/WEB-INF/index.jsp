@@ -90,7 +90,16 @@ th, td {
 	<main>
 		<h1>社員一覧</h1>
 
-
+	<%
+	String message = (String) request.getAttribute("message");
+	if (message != null && !message.isEmpty()) {
+	%>
+	<script>
+            alert("<%=message%>");
+	</script>
+	<%
+	}
+	%>
 
 		<%
 		ArrayList<Shain> shainList = (ArrayList<Shain>) request.getAttribute("shainList");

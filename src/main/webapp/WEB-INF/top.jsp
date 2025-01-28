@@ -112,7 +112,7 @@ footer {
 			Long currentUserId = (Long) request.getAttribute("currentUserId");
 			Shain shain = (Shain) request.getAttribute("shain");
 			%>
-			<p>TSET用：250127_1</p>
+			<p>TSET用：250128_1</p>
 			<p>
 				<label for="file">プロフィール写真:</label>
 			</p>

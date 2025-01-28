@@ -49,7 +49,8 @@ footer {
 .button-link {
 	display: inline-block;
 	padding: 10px 20px;
-	margin: 10px; color : white;
+	margin: 10px;
+	color: white;
 	background-color: #007BFF;
 	text-decoration: none;
 	border-radius: 5px;
@@ -80,7 +81,16 @@ form {
 <title>ログイン</title>
 </head>
 <body>
-
+	<%
+	String message = (String) request.getAttribute("message");
+	if (message != null && !message.isEmpty()) {
+	%>
+	<script>
+            alert("<%=message%>");
+	</script>
+	<%
+	}
+	%>
 	<script src="/js/clock.js"></script>
 
 	<div class="container">
@@ -88,7 +98,6 @@ form {
 		<main>
 			<h1>ログイン</h1>
 
-			<p>${message}</p>
 			<form action="/login" method="post">
 				<label for="username">Email:</label> <input type="text"
 					name="username" id="username" required><br> <label

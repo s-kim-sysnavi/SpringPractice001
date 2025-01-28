@@ -195,7 +195,7 @@ table.form-table {
 
 
 					<tr>
-						<td><label for="sei">姓:</label></td>
+						<td><label for="sei">性別:</label></td>
 						<td><%=shain.getSei()%></td>
 					</tr>
 

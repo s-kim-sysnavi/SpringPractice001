@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,7 +44,7 @@ public class ShainController {
 	}
 
 	@GetMapping("/login")
-	public String login() {
+	public String login(@RequestParam(required = false) String message, Model model) {
 		return "login";
 	}
 
@@ -66,24 +67,39 @@ public class ShainController {
 	//		return "username".equals(username) && "password".equals(password);
 	//	}
 
-	
 	@GetMapping({ "/register" })
-	public String register() {
+	public String register(@RequestParam(required = false) String message, Model model) {
+		if (message != null) {
+			model.addAttribute("message", message);
+		}
 		return "register";
 	}
 
 	@PostMapping({ "/register_success" })
 	public String registerUser(@RequestParam String username, @RequestParam String password, @RequestParam String role,
-			Model model, @ModelAttribute Shain request) {
+			RedirectAttributes redirectAttributes, @ModelAttribute Shain request) {
+
+		String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+		Pattern pattern = Pattern.compile(emailRegex);
+
 		try {
+			if (!pattern.matcher(username).matches()) {
+				redirectAttributes.addFlashAttribute("message", "メールアドレスの形式が正しくありません。");
+				redirectAttributes.addFlashAttribute("alertType", "error");
+				return "redirect:/register";
+			}
+
 			User user = this.customUserDetailsService.registerUser(username, password, role);
 			request.setUserId(user.getId());
 			Shain shain = this.shainService.makeShain(request);
 			this.shainService.insertShain(shain);
-			model.addAttribute("message", username + "");
+			redirectAttributes.addFlashAttribute("message", "会員登録に成功しました。");
+			redirectAttributes.addFlashAttribute("alertType", "success");
 			return "redirect:/login";
 		} catch (IllegalArgumentException e) {
-			return "redirect:/register?error";
+			redirectAttributes.addFlashAttribute("message", "既に登録しているアカウントです。");
+			redirectAttributes.addFlashAttribute("alertType", "error");
+			return "redirect:/register";
 		}
 	}
 
@@ -162,10 +178,12 @@ public class ShainController {
 
 	@PostMapping({ "/update" })
 	public String updateSuccess(@ModelAttribute Shain request, @RequestParam("username") String username,
-			@RequestParam("role") String role) {
+			@RequestParam("role") String role, RedirectAttributes redirectAttributes) {
 		Shain shain = this.shainService.makeShain(request);
 		this.customUserDetailsService.updateUserRole(username, role);
 		this.shainService.updateShain(shain);
+		redirectAttributes.addFlashAttribute("message", "プロフィールの更新ができました。");
+		redirectAttributes.addFlashAttribute("alertType", "success");
 		return "redirect:/index";
 	}
 
@@ -194,11 +212,13 @@ public class ShainController {
 	}
 
 	@PostMapping({ "/delete" })
-	public String deleteSuccess(@RequestParam("userId") Long userId) {
+	public String deleteSuccess(@RequestParam("userId") Long userId, RedirectAttributes redirectAttributes) {
 		this.shainService.deleteShain(userId);
 		Optional<User> user = this.userRepository.findById(userId);
 		Objects.requireNonNull(this.userRepository);
 		user.ifPresent(this.userRepository::delete);
+		redirectAttributes.addFlashAttribute("message", "該当社員の情報が削除できました。");
+		redirectAttributes.addFlashAttribute("alertType", "success");
 		return "redirect:/index";
 	}
 

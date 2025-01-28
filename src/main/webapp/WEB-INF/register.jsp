@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8"
+<meta charset="UTF-8">
 
 <style>
 html, body {
@@ -69,31 +69,71 @@ form {
 .button-link:hover {
 	background-color: #0056b3;
 }
+
+button:disabled {
+	background-color: #ccc;
+	color: #666;
+	cursor: not-allowed;
+}
+
+.error {
+	color: red;
+	font-size: 12px;
+	margin-bottom: 10px;
+	display: block;
+}
 </style>
-<title>Insert title here</title>
+<title>会員登録画面</title>
 </head>
 <body>
+	<script src="/js/register_form_validation.js" defer></script>
+	<%
+	String message = (String) request.getAttribute("message");
+	if (message != null && !message.isEmpty()) {
+	%>
+	<script>
+            alert("<%=message%>");
+	</script>
+	<%
+	}
+	%>
 	<div class="container">
 
 		<header> ヘッダー </header>
 		<main>
-			<h3 th:text="${message}"></h3>
 			<h1>会員登録画面</h1>
+			<%
+			String errorMessage = (String) request.getAttribute("errorMessage");
+			if (errorMessage != null && !errorMessage.isEmpty()) {
+			%>
+			<div class="error"><%=errorMessage%></div>
+			<%
+			}
+			%>
+
 			<form action="/register_success" method="post">
 
-				<label for="username">username:</label> <input type="text"
-					id="username" name="username" required /> <label for="password">password:</label>
-				<input type="password" id="password" name="password" required /> <label
-					for="name">名前:</label> <input type="text" id="name" name="name"
-					class="form-input" required> <input type="hidden"
-					name="role" value="USER"> <label for="sei">姓:</label> <select
-					id="sei" name="sei" class="form-input" required>
+				<label for="username">Eメール:</label> <input type="text" id="username"
+					name="username" required />
+				<div id="usernameError" class="error"></div>
+				<label for="password">パスワード:</label> <input type="password"
+					id="password" name="password" required />
+				<div id="passwordError" class="error"></div>
+				<label for="name">名前:</label> <input type="text" id="name"
+					name="name" class="form-input" required>
+				<div id="nameError" class="error"></div>
+				<input type="hidden" name="role" value="USER"> <label
+					for="sei">性別:</label> <select id="sei" name="sei"
+					class="form-input" required>
 					<option value="">選択してください</option>
 					<option value="男">男</option>
 					<option value="女">女</option>
-				</select> <label for="address">住所:</label> <input type="text" id="address"
-					name="address" class="form-input" required> <label
-					for="nen">入社年度:</label> <select id="nen" name="nen"
+				</select>
+				<div id="seiError" class="error"></div>
+				<label for="address">住所:</label> <input type="text" id="address"
+					name="address" class="form-input" required>
+				<div id="addressError" class="error"></div>
+				<label for="nen">入社年度:</label> <select id="nen" name="nen"
 					class="form-input" required>
 					<option value="">選択してください</option>
 					<%
@@ -103,11 +143,12 @@ form {
 					<%
 					}
 					%>
-
-				</select> <input type="hidden" name="${_csrf.parameterName}"
+				</select>
+				<div id="nenError" class="error"></div>
+				<input type="hidden" name="${_csrf.parameterName}"
 					value="${_csrf.token}"> <input type="hidden"
 					name="profileImage" value="default.png">
-				<button class="button-link" type="submit">登録する</button>
+				<button id="submitButton" class="button-link" type="submit" disabled>登録する</button>
 			</form>
 			<a href="login" class="button-link">ログイン画面に戻る</a>
 		</main>
